@@ -25,8 +25,10 @@
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>
+#include <QLocale>
 #include <QMessageBox>
 #include <QSettings>
+#include <QTranslator>
 
 #if defined(Q_OS_WIN)
 #include <QStandardPaths>
@@ -207,6 +209,13 @@ int main(int argc, char **argv)
 
     /* Construct the application */
     QApplication memento(argc, argv);
+
+    /* Load translations based on system locale */
+    QTranslator translator;
+    QString locale = QLocale::system().name(); // e.g., zh_CN, en_US
+    if (translator.load("memento_" + locale, ":/translations")) {
+        memento.installTranslator(&translator);
+    }
 
 #if defined(Q_OS_MACOS)
     /* Change the OpenGL version to 4.1 on macOS */

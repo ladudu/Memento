@@ -23,4 +23,7 @@
     <file>images/skipright.svg</file>
     <file>images/uparrow.svg</file>
 </qresource>
+<qresource prefix="/translations">
+    <file alias="memento_zh_CN.qm">../translations/memento_zh_CN.qm</file>
+</qresource>
 </RCC>
