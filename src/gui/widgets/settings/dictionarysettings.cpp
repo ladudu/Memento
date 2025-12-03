@@ -123,6 +123,15 @@ void DictionarySettings::hideEvent(QHideEvent *event)
     setButtonsEnabled(false);
 }
 
+void DictionarySettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Button Box Handlers */
 

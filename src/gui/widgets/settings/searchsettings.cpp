@@ -97,6 +97,15 @@ void SearchSettings::showEvent(QShowEvent *event)
     methodTextChanged(m_ui->comboBoxMethod->currentText());
 }
 
+void SearchSettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Button Box Handlers */
 

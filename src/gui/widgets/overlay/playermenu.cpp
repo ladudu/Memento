@@ -853,3 +853,15 @@ void PlayerMenu::handleToggleSubtitleList()
 }
 
 /* End Widget Handlers */
+/* Begin Event Handlers */
+
+void PlayerMenu::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+    }
+}
+
+/* End Event Handlers */

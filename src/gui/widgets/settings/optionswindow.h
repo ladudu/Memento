@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include <QMap>
+#include <QList>
 
 #include "state/context.h"
 
@@ -50,6 +50,12 @@ protected:
      */
     void showEvent(QShowEvent *event) override;
 
+    /**
+     * Handles language change events to retranslate the UI.
+     * @param event The change event.
+     */
+    void changeEvent(QEvent *event) override;
+
 private:
     /**
      * Adds a settings widget to the window.
@@ -64,6 +70,11 @@ private:
      */
     void showSelectedOption();
 
+    /**
+     * Retranslates the option list items.
+     */
+    void retranslateOptionList();
+
     /* The UI object containing all the widgets. */
     std::unique_ptr<Ui::OptionsWindow> m_ui;
 
@@ -73,8 +84,8 @@ private:
     /* The widget currently being shown. */
     QWidget *m_currentWidget = nullptr;
 
-    /* Maps settings names to settings widgets. */
-    QMap<QString, QWidget *> m_widgets;
+    /* List of settings widgets in order. */
+    QList<QWidget *> m_widgets;
 };
 
 #endif // OPTIONSWINDOW_H

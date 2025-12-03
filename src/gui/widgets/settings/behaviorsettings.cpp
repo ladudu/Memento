@@ -92,6 +92,15 @@ void BehaviorSettings::showEvent(QShowEvent *event)
     handleFileOpenChange(m_ui->comboFileOpenDir->currentText());
 }
 
+void BehaviorSettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Button Box Handlers */
 

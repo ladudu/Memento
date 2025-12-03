@@ -197,6 +197,13 @@ private Q_SLOTS:
      */
     void refreshRecentFileMenu();
 
+protected:
+    /**
+     * Handles language change events to retranslate the UI.
+     * @param event The change event.
+     */
+    void changeEvent(QEvent *event) override;
+
 private:
     /**
      * Clears all the tracks in the Audio and Subtitle menus.

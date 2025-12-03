@@ -57,6 +57,12 @@ protected:
      */
     void showEvent(QShowEvent *event) override;
 
+    /**
+     * Handles language change events to retranslate the UI.
+     * @param event The change event.
+     */
+    void changeEvent(QEvent *event) override;
+
 private Q_SLOTS:
     /**
      * Applies the current configuration to the settings.

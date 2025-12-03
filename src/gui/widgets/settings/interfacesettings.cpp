@@ -39,6 +39,11 @@ InterfaceSettings::InterfaceSettings(
 {
     m_ui->setupUi(this);
 
+    /* Initialize Language ComboBox Data */
+    m_ui->comboLanguage->setItemData(0, "System");
+    m_ui->comboLanguage->setItemData(1, "en_US");
+    m_ui->comboLanguage->setItemData(2, "zh_CN");
+
 #if !defined(Q_OS_UNIX) || defined(Q_OS_DARWIN)
     m_ui->checkSystemIcons->hide();
     m_ui->widgetDpiScaling->hide();
@@ -121,6 +126,26 @@ void InterfaceSettings::showEvent(QShowEvent *event)
     restoreSaved();
 }
 
+void InterfaceSettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+
+        /* Update language combo box items while preserving selection */
+        int currentIndex = m_ui->comboLanguage->currentIndex();
+
+        /* Block signals to prevent recursive updates */
+        bool oldState = m_ui->comboLanguage->blockSignals(true);
+        m_ui->comboLanguage->setItemText(0, tr("System"));
+        m_ui->comboLanguage->setItemText(1, tr("English"));
+        m_ui->comboLanguage->setItemText(2, tr("Chinese (Simplified)"));
+        m_ui->comboLanguage->setCurrentIndex(currentIndex);
+        m_ui->comboLanguage->blockSignals(oldState);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Button Event Handlers */
 
@@ -129,6 +154,14 @@ void InterfaceSettings::restoreDefaults()
     m_ui->comboTheme->setCurrentIndex(
         static_cast<int>(Constants::Settings::Interface::THEME_DEFAULT)
     );
+    // Set the default language from constants
+    QString defaultLang = Constants::Settings::Interface::LANGUAGE_DEFAULT;
+    int langIndex = m_ui->comboLanguage->findData(defaultLang);
+    if (langIndex != -1) {
+        m_ui->comboLanguage->setCurrentIndex(langIndex);
+    } else {
+        m_ui->comboLanguage->setCurrentIndex(0);
+    }
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
     m_ui->checkSystemIcons->setChecked(
         Constants::Settings::Interface::SYSTEM_ICONS_DEFAULT
@@ -232,6 +265,19 @@ void InterfaceSettings::restoreSaved()
             (int)Constants::Settings::Interface::THEME_DEFAULT
         ).toInt()
     );
+
+    QString lang = settings.value(
+        Constants::Settings::Interface::LANGUAGE,
+        Constants::Settings::Interface::LANGUAGE_DEFAULT
+    ).toString();
+
+    int index = m_ui->comboLanguage->findData(lang);
+    if (index != -1) {
+        m_ui->comboLanguage->setCurrentIndex(index);
+    } else {
+        m_ui->comboLanguage->setCurrentIndex(0); // Default to System if not found
+    }
+
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
     m_ui->checkSystemIcons->setChecked(
         settings.value(
@@ -393,6 +439,12 @@ void InterfaceSettings::applyChanges()
         Constants::Settings::Interface::THEME,
         m_ui->comboTheme->currentIndex()
     );
+
+    QString langCode = m_ui->comboLanguage->currentData().toString();
+    if (langCode.isEmpty()) {
+        langCode = "System";
+    }
+    settings.setValue(Constants::Settings::Interface::LANGUAGE, langCode);
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
     settings.setValue(
         Constants::Settings::Interface::SYSTEM_ICONS,

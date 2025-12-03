@@ -76,6 +76,37 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="labelLanguage">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Language</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboLanguage">
+         <item>
+          <property name="text">
+           <string>System</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>English</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Chinese (Simplified)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkSystemIcons">
          <property name="toolTip">
           <string>Uses system icons when available on Linux.</string>

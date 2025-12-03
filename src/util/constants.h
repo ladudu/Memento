@@ -234,6 +234,9 @@ namespace Constants
         {
             constexpr const char *GROUP = "interface";
 
+            constexpr const char *LANGUAGE = "language";
+            constexpr const char *LANGUAGE_DEFAULT = "System";
+
             constexpr const char *THEME = "theme";
             constexpr Theme THEME_DEFAULT = Theme::System;
 

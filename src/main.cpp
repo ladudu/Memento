@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QFile>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -154,6 +153,11 @@ void updateSettings()
 }
 
 /**
+ * Global translator for UI translations
+ */
+QTranslator *g_translator = nullptr;
+
+/**
  * Registers MetaTypes for use with signals and slots.
  */
 static void registerMetaTypes()
@@ -210,11 +214,29 @@ int main(int argc, char **argv)
     /* Construct the application */
     QApplication memento(argc, argv);
 
-    /* Load translations based on system locale */
-    QTranslator translator;
-    QString locale = QLocale::system().name(); // e.g., zh_CN, en_US
-    if (translator.load("memento_" + locale, ":/translations")) {
-        memento.installTranslator(&translator);
+    /* Initialize global translator */
+    g_translator = new QTranslator(&memento);
+
+    /* Load initial translation based on settings */
+    QSettings settings;
+    settings.beginGroup(Constants::Settings::Interface::GROUP);
+    QString locale = settings.value(
+        Constants::Settings::Interface::LANGUAGE,
+        Constants::Settings::Interface::LANGUAGE_DEFAULT
+    ).toString();
+    settings.endGroup();
+
+    if (locale == "System")
+    {
+        locale = QLocale::system().name();
+    }
+
+    if (!locale.startsWith("en"))
+    {
+        if (g_translator->load("memento_" + locale, ":/translations"))
+        {
+            memento.installTranslator(g_translator);
+        }
     }
 
 #if defined(Q_OS_MACOS)

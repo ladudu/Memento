@@ -263,6 +263,17 @@ void AnkiSettings::hideEvent(QHideEvent *event)
     m_configs.clear();
 }
 
+void AnkiSettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->comboBoxProfile->blockSignals(true);
+        m_ui->retranslateUi(this);
+        m_ui->comboBoxProfile->blockSignals(false);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Dialog Button Actions */
 

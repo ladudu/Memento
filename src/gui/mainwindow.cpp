@@ -37,6 +37,9 @@
 #include "util/constants.h"
 #include "util/iconfactory.h"
 
+/* External global translator from main.cpp */
+extern QTranslator *g_translator;
+
 /* Begin Constructor/Destructor */
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -108,6 +111,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->splitterPlayerSubtitles->setStretchFactor(1, 0);
 
     /* Initializers */
+    loadTranslation();
     initTheme();
     initWindow();
 }
@@ -178,6 +182,11 @@ void MainWindow::initWindow()
     connect(
         m_context, &Context::interfaceSettingsChanged,
         this, &MainWindow::initTheme,
+        Qt::QueuedConnection
+    );
+    connect(
+        m_context, &Context::interfaceSettingsChanged,
+        this, &MainWindow::loadTranslation,
         Qt::QueuedConnection
     );
     connect(
@@ -452,6 +461,9 @@ void MainWindow::initTheme()
 #endif
 
     settings.endGroup();
+
+    /* Reload translation when theme/settings change */
+    loadTranslation();
 }
 
 /* End initializers */
@@ -596,6 +608,10 @@ void MainWindow::changeEvent(QEvent *event)
     if (event->type() == QEvent::ActivationChange)
     {
         emit m_context->windowFocusChanged(isActiveWindow());
+    }
+    else if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
     }
 #if defined(Q_OS_MACOS)
     else if (event->type() == QEvent::WindowStateChange)
@@ -818,6 +834,61 @@ void MainWindow::showAbout() const
 }
 
 /* End Show Methods */
+
+/* Begin Translation */
+
+void MainWindow::loadTranslation()
+{
+    if (!g_translator)
+    {
+        return;
+    }
+
+    QSettings settings;
+    settings.beginGroup(Constants::Settings::Interface::GROUP);
+    QString locale = settings.value(
+        Constants::Settings::Interface::LANGUAGE,
+        Constants::Settings::Interface::LANGUAGE_DEFAULT
+    ).toString();
+    settings.endGroup();
+
+    if (locale == "System")
+    {
+        locale = QLocale::system().name();
+    }
+
+    /* Remove the old translator if it's already installed */
+    QApplication::removeTranslator(g_translator);
+
+    /* Load and install the new translator if not English */
+    if (!locale.startsWith("en"))
+    {
+        if (g_translator->load("memento_" + locale, ":/translations"))
+        {
+            QApplication::installTranslator(g_translator);
+        }
+    }
+
+    /* Trigger retranslation by sending LanguageChange event to all widgets */
+    QEvent languageChangeEvent(QEvent::LanguageChange);
+    QCoreApplication::sendEvent(QCoreApplication::instance(), &languageChangeEvent);
+
+    /* Explicitly send to all top-level widgets and their children */
+    const QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (QWidget *widget : topLevelWidgets)
+    {
+        QCoreApplication::sendEvent(widget, &languageChangeEvent);
+
+        /* Also send to all children recursively */
+        const QList<QWidget *> children = widget->findChildren<QWidget *>();
+        for (QWidget *child : children)
+        {
+            QCoreApplication::sendEvent(child, &languageChangeEvent);
+        }
+    }
+}
+
+/* End Translation */
 #if defined(Q_OS_MACOS)
 /* Begin Cocoa Handlers */
 

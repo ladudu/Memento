@@ -129,6 +129,15 @@ void AudioSourceSettings::showEvent(QShowEvent *event)
     m_ui->buttonUp->setEnabled(false);
 }
 
+void AudioSourceSettings::changeEvent(QEvent *event)
+{
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+    {
+        m_ui->retranslateUi(this);
+    }
+}
+
 /* End Event Handlers */
 /* Begin Button Box Handlers */
 

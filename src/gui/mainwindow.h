@@ -22,6 +22,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTranslator>
 
 #include <memory>
 
@@ -190,6 +191,13 @@ private Q_SLOTS:
      * player from being visible when nothing else is.
      */
     void updateSearchSubListSplitter();
+
+    /**
+     * Loads and applies the translation based on the current language setting.
+     * This method removes the old translator and installs a new one with the
+     * current language preference from settings.
+     */
+    void loadTranslation();
 
 private:
     /**
