@@ -39,10 +39,10 @@ InterfaceSettings::InterfaceSettings(
 {
     m_ui->setupUi(this);
 
-    /* Initialize Language ComboBox Data */
-    m_ui->comboLanguage->setItemData(0, "System");
-    m_ui->comboLanguage->setItemData(1, "en_US");
-    m_ui->comboLanguage->setItemData(2, "zh_CN");
+    /* Initialize Language ComboBox */
+    m_ui->comboLanguage->addItem(tr("System"), "System");
+    m_ui->comboLanguage->addItem(tr("English"), "en_US");
+    m_ui->comboLanguage->addItem(tr("Chinese (Simplified)"), "zh_CN");
 
 #if !defined(Q_OS_UNIX) || defined(Q_OS_DARWIN)
     m_ui->checkSystemIcons->hide();

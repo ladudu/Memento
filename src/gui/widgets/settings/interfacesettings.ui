@@ -89,21 +89,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="comboLanguage">
-         <item>
-          <property name="text">
-           <string>System</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>English</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Chinese (Simplified)</string>
-          </property>
-         </item>
+         <property name="toolTip">
+          <string>Select the application language. Click Apply to update the interface.</string>
+         </property>
         </widget>
        </item>
        <item>

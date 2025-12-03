@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFontDatabase>
+#include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
 #include <QSettings>
@@ -233,6 +234,14 @@ int main(int argc, char **argv)
 
     if (!locale.startsWith("en"))
     {
+        /* Load Qt base translations for standard widgets */
+        QTranslator *qtTranslator = new QTranslator(&memento);
+        if (qtTranslator->load("qtbase_" + locale, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+        {
+            memento.installTranslator(qtTranslator);
+        }
+
+        /* Load application translations */
         if (g_translator->load("memento_" + locale, ":/translations"))
         {
             memento.installTranslator(g_translator);

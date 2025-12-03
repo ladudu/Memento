@@ -1298,6 +1298,26 @@ Click the help button for documentation</source>
         <source>Definitions</source>
         <translation>定义</translation>
     </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/interfacesettings.cpp" line="44"/>
+        <source>English</source>
+        <translation>英语</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/interfacesettings.cpp" line="45"/>
+        <source>Chinese (Simplified)</source>
+        <translation>简体中文</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/interfacesettings.ui" line="92"/>
+        <source>Select the application language. Click Apply to update the interface.</source>
+        <translation>选择应用程序语言。点击"应用"以更新界面。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/interfacesettings.ui" line="86"/>
+        <source>Language</source>
+        <translation>语言</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -1458,6 +1478,41 @@ This can be a local file, a HuggingFace repository, or a URL.</source>
         <location filename="../src/gui/widgets/settings/optionswindow.ui" line="53"/>
         <source>TextLabel</source>
         <translation>文本标签</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="51"/>
+        <source>Anki Integration</source>
+        <translation>Anki集成</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="52"/>
+        <source>Audio Sources</source>
+        <translation>音频源</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="53"/>
+        <source>Behavior</source>
+        <translation>行为</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="54"/>
+        <source>Dictionaries</source>
+        <translation>词典</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="55"/>
+        <source>Search</source>
+        <translation>搜索</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="56"/>
+        <source>Interface</source>
+        <translation>界面</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/widgets/settings/optionswindow.cpp" line="58"/>
+        <source>OCR</source>
+        <translation>OCR</translation>
     </message>
 </context>
 <context>

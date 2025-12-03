@@ -240,6 +240,9 @@ private:
     /* A saved pointer to the AboutWindow */
     std::unique_ptr<AboutWindow> m_aboutWindow = nullptr;
 
+    /* Qt standard widgets translator */
+    QTranslator *m_qtTranslator = nullptr;
+
     /* Saved value for determining if the MainWindow is maximized. Used for
      * restoring window state when leaving fullscreen. */
     bool m_maximized = false;

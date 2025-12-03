@@ -132,7 +132,6 @@ void OptionsWindow::showSelectedOption()
 
 void OptionsWindow::retranslateOptionList()
 {
-    return; // Temporarily disable to investigate issues
     /* Save current selection */
     int currentRow = m_ui->listOptions->currentRow();
 

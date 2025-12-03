@@ -21,6 +21,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QScreen>
@@ -47,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui(std::make_unique<Ui::MainWindow>())
 {
     m_ui->setupUi(this);
+
+    /* Initialize Qt translator for standard widgets */
+    m_qtTranslator = new QTranslator(this);
 
 #if defined(Q_OS_MACOS)
     m_oldUpdatesEnabled = updatesEnabled();
@@ -857,12 +861,20 @@ void MainWindow::loadTranslation()
         locale = QLocale::system().name();
     }
 
-    /* Remove the old translator if it's already installed */
+    /* Remove the old translators if they're already installed */
     QApplication::removeTranslator(g_translator);
+    QApplication::removeTranslator(m_qtTranslator);
 
-    /* Load and install the new translator if not English */
+    /* Load and install the new translators if not English */
     if (!locale.startsWith("en"))
     {
+        /* Load Qt base translations for standard widgets */
+        if (m_qtTranslator->load("qtbase_" + locale, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+        {
+            QApplication::installTranslator(m_qtTranslator);
+        }
+
+        /* Load application translations */
         if (g_translator->load("memento_" + locale, ":/translations"))
         {
             QApplication::installTranslator(g_translator);
